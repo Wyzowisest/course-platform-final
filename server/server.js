@@ -12,8 +12,15 @@ import adminRoutes from "./routes/admin.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: '../.env' });
+// Determine the correct paths based on where the server is running
+const isRootRun = __dirname.includes('/server') === false && __dirname.includes('\\server') === false;
+const clientDistPath = isRootRun 
+  ? path.join(__dirname, "client/dist") 
+  : path.join(__dirname, "../client/dist");
+
+dotenv.config({ path: isRootRun ? '.env' : '../.env' });
 console.log("MONGO_URI:", process.env.MONGO_URI);
+console.log("Client path:", clientDistPath);
 
 const app = express();
 app.use(cors());
@@ -21,7 +28,7 @@ app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
 // Serve static files from the React app build directory
-app.use(express.static(path.join(__dirname, "../client/dist")));
+app.use(express.static(clientDistPath));
 
 // API routes
 app.use("/api/auth", authRoutes);
@@ -36,7 +43,7 @@ app.get("/api/health", (req, res) => {
 // Catch all handler: send back React's index.html file for client-side routing
 // This must come LAST after all API routes
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+  res.sendFile(path.join(clientDistPath, "index.html"));
 });
 
 mongoose.connect(process.env.MONGO_URI)

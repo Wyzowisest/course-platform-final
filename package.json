@@ -1,4 +1,14 @@
 {
+  "name": "course-platform",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server/server.js",
+    "build": "cd client && npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.3"
   }
