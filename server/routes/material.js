@@ -56,6 +56,16 @@ async function uploadToCloudinary(file) {
   });
 }
 
+function getCloudinaryDownloadUrl(material) {
+  return cloudinary.url(material.publicId, {
+    resource_type: material.resourceType || "raw",
+    type: "upload",
+    secure: true,
+    flags: "attachment",
+    attachment: material.originalFilename,
+  });
+}
+
 // GET ALL MATERIALS
 router.get("/", protect, async (req, res) => {
   try {
@@ -109,9 +119,12 @@ router.get("/:id/download", protect, async (req, res) => {
     await Material.findByIdAndUpdate(req.params.id, { $inc: { downloads: 1 } });
 
     if (material.fileUrl) {
-      const fileResponse = await fetch(material.fileUrl);
+      const fileResponse = await fetch(
+        material.publicId ? getCloudinaryDownloadUrl(material) : material.fileUrl
+      );
 
       if (!fileResponse.ok || !fileResponse.body) {
+        console.error("Cloudinary fetch failed:", fileResponse.status, fileResponse.statusText);
         return res.status(502).json({ message: "Unable to fetch file from storage" });
       }
 
@@ -130,7 +143,7 @@ router.get("/:id/download", protect, async (req, res) => {
       return;
     }
 
-    if (!fs.existsSync(material.filepath)) {
+    if (!material.filepath || !fs.existsSync(material.filepath)) {
       return res.status(404).json({ message: "Stored file not found" });
     }
 
