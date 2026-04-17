@@ -61,6 +61,7 @@ function getCloudinaryDownloadUrl(material) {
     resource_type: material.resourceType || "raw",
     type: "upload",
     secure: true,
+    sign_url: true,
     flags: "attachment",
     attachment: material.originalFilename,
   });
