@@ -22,7 +22,23 @@ const materialSchema = new mongoose.Schema({
   },
   filepath: {
     type: String,
-    required: true,
+    default: null,
+  },
+  fileUrl: {
+    type: String,
+    default: null,
+  },
+  publicId: {
+    type: String,
+    default: null,
+  },
+  resourceType: {
+    type: String,
+    default: null,
+  },
+  mimeType: {
+    type: String,
+    default: null,
   },
   uploadedBy: {
     type: mongoose.Schema.Types.ObjectId,

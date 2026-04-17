@@ -1,4 +1,5 @@
 import express from "express";
+import fs from "fs";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -23,9 +24,13 @@ console.log("MONGO_URI:", process.env.MONGO_URI);
 console.log("Client path:", clientDistPath);
 
 const app = express();
+const uploadDir = path.resolve(__dirname, isRootRun ? "uploads" : "../uploads");
+
+fs.mkdirSync(uploadDir, { recursive: true });
+
 app.use(cors());
 app.use(express.json());
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(uploadDir));
 
 // Serve static files from the React app build directory
 app.use(express.static(clientDistPath));

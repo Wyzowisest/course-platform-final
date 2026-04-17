@@ -23,7 +23,7 @@ A modern, full-stack web application for sharing course materials between lectur
 - Node.js with Express
 - MongoDB with Mongoose
 - JWT for authentication
-- Multer for file uploads
+- Multer and Cloudinary for file uploads
 
 ## Getting Started
 
@@ -41,11 +41,14 @@ A modern, full-stack web application for sharing course materials between lectur
    ```
 
 2. **Set up environment variables**
-   - Copy `.env` to project root
-   - Update MongoDB connection string:
+   - Copy `.env.example` to `.env`
+   - Update MongoDB, JWT, and Cloudinary values:
      ```
      MONGO_URI=mongodb://127.0.0.1:27017/course-platform
      JWT_SECRET=your-secret-key
+     CLOUDINARY_CLOUD_NAME=your-cloud-name
+     CLOUDINARY_API_KEY=your-api-key
+     CLOUDINARY_API_SECRET=your-api-secret
      ```
 
 3. **Install server dependencies**
