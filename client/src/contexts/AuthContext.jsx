@@ -23,15 +23,15 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = async (email, password) => {
-    const res = await API.post('/auth/login', { email, password });
+  const login = async (loginId, password) => {
+    const res = await API.post('/auth/login', { loginId, password });
     const { token, user } = res.data;
     localStorage.setItem('token', token);
     setUser(user);
   };
 
-  const register = async (name, email, password, role) => {
-    const res = await API.post('/auth/register', { name, email, password, role });
+  const register = async (name, email, studentId, password, role) => {
+    const res = await API.post('/auth/register', { name, email, studentId, password, role });
     const { token, user } = res.data;
     localStorage.setItem('token', token);
     setUser(user);
